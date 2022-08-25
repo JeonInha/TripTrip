@@ -13,7 +13,8 @@ public class UserDao {
 	private UserAccount resultMapping(ResultSet rs) throws SQLException {
 		String id = rs.getString("id");
 		String name = rs.getString("name");
-		return new UserAccount(id, name);
+		String pw = rs.getString("pw");
+		return new UserAccount(id, name, pw);
 	}
 	
 	// c:: sign Up logic // hasing f(x) use
@@ -54,6 +55,24 @@ public class UserDao {
 				pw = rs.getString("name");
 			} 
 			return pw;
+		} finally {
+			JDBCListener.closeRs(rs);
+		}
+	}
+	
+	public String saltSelectById(Connection conn, String id) throws SQLException {
+		String sql = "select salt from triptrip.user where id = ?";
+		ResultSet rs = null;
+		String salt = null;
+		
+		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				salt = rs.getString("salt");
+			} 
+			return salt;
 		} finally {
 			JDBCListener.closeRs(rs);
 		}

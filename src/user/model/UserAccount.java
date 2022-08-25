@@ -3,6 +3,14 @@ package user.model;
 public class UserAccount {
 	private String id;
 	private String name;
+	private String pw;
+	
+	public UserAccount(String id, String name, String pw) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.pw = pw;
+	}
 	
 	public UserAccount(String id, String name) {
 		super();
@@ -21,6 +29,18 @@ public class UserAccount {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getPw() {
+		return pw;
+	}
+
+	public void setPw(String pw) {
+		this.pw = pw;
+	}
+	
+	public boolean matchPassword(String pwd) {
+		return pw.equals(pwd);
 	}
 	
 	
