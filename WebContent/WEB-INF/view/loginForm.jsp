@@ -8,11 +8,27 @@
 <title>Insert title here</title>
 </head>
 <script type="text/javascript">
+	// TODO 고칠 로직
 	const map = '${errors}';
+	   	
+	var pattern_kor = /[\s.가-힣]/;
+	var pattern_eql = /[=]/;
+	
+	var str = '';
+	
 	for (let item of map) {
-		console.log(item[0]);
+		console.log(item);
+		if (pattern_eql.test(item)) {
+			break;
+		}
+		if (pattern_kor.test(item)) {
+			str = str + item;
+		}
 	}
 	
+	if (str) {
+	window.alert(str);
+	}
 	
 </script>
 <body>
@@ -24,8 +40,5 @@
 		<input
 			type="submit" value="login" />
 	</form>
-	<c:if test="${! empty errors}">
-		<p>값을 입력해야 합니다. 계정 정보가 없거나 아이디, 패스워드를 정확히 입력했는지 확인하세요.</p>
-	</c:if>
 </body>
 </html>

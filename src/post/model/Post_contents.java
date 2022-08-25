@@ -3,6 +3,7 @@ package post.model;
 public class Post_contents {
 	private Integer number;
 	private String contents;
+	
 	public Post_contents(Integer number, String contents) {
 		super();
 		this.number = number;

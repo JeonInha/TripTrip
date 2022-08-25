@@ -42,10 +42,10 @@ public class LoginHandler implements CommandHandler {
 		req.setAttribute("errors", errors);
 		
 		if (id == null || id.isEmpty()) {
-			errors.put("id", true);
+			errors.put("아이디를 입력하세요.", true);
 		}
 		if (pw == null || pw.isEmpty()) {
-			errors.put("pw", true);
+			errors.put("패스워드 를입력하세요.", true);
 		}
 		if (! errors.isEmpty()) {
 			return FORM_VIEW;
@@ -57,7 +57,7 @@ public class LoginHandler implements CommandHandler {
 		return null;
 		
 		} catch (LoginFailExcepion e) {
-			errors.put("notMatch", true);
+			errors.put("입력정보가 일치하지 않습니다.", true);
 			return FORM_VIEW;
 		}	
 	}

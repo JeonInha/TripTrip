@@ -1,6 +1,7 @@
 package post.model;
 
 public class Post {
+	
 	private String title;
 	private Integer contents_number;
 	private String user_id;

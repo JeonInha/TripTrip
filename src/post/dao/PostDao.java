@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class PostDao {
+	
 	public Post insert(Connection conn, Post post) throws SQLException {
 		PreparedStatement pstmt = null;
 		Statement stmt =null;
