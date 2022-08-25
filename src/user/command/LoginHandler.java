@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 
 import mvc.command.CommandHandler;
 import user.model.UserAccount;
+import user.service.LoginFailExcepion;
 import user.service.LoginService;
 
 public class LoginHandler implements CommandHandler {
@@ -32,7 +33,7 @@ public class LoginHandler implements CommandHandler {
 		return FORM_VIEW;
 	}
 
-	private String processSubmit(HttpServletRequest req, HttpServletResponse res) {
+	private String processSubmit(HttpServletRequest req, HttpServletResponse res) throws IOException {
 		String id = trim(req.getParameter("id"));
 		String pw = trim(req.getParameter("pw"));
 		HttpSession session = req.getSession();
@@ -55,7 +56,7 @@ public class LoginHandler implements CommandHandler {
 		res.sendRedirect(req.getContextPath() + "/index.jsp");
 		return null;
 		
-		} catch (IOException e) {
+		} catch (LoginFailExcepion e) {
 			errors.put("notMatch", true);
 			return FORM_VIEW;
 		}	

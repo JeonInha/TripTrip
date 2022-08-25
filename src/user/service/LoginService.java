@@ -16,12 +16,14 @@ public class LoginService {
 		try (Connection conn = JDBCListener.getConnection()) {
 			
 			UserAccount user = md.userSelectById(conn, id);
-			String salt = md.saltSelectById(conn, id);
-			pw = SHA256Util.getEncrypt(pw, salt);
 			
 			if (user==null) {
 				throw new LoginFailExcepion();
 			}
+			
+			String salt = md.saltSelectById(conn, id);
+			pw = SHA256Util.getEncrypt(pw, salt);
+			
 			if (! user.matchPassword(pw)) {
 				throw new LoginFailExcepion();
 			}

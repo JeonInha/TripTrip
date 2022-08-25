@@ -24,7 +24,6 @@ public class ControllerUsingURI extends HttpServlet {
 
     public void init() throws ServletException {
         String configFile = getInitParameter("configFile");
-        System.out.println("설정파일 확인 : " + configFile);
         Properties prop = new Properties();
         String configFilePath = getServletContext().getRealPath(configFile);
         try (FileReader fis = new FileReader(configFilePath)) {
@@ -32,7 +31,6 @@ public class ControllerUsingURI extends HttpServlet {
         } catch (IOException e) {
             throw new ServletException(e);
         }
-        System.out.println("프로퍼티 객체 확인 : " + prop);
         Iterator keyIter = prop.keySet().iterator();
         while (keyIter.hasNext()) {
             String command = (String) keyIter.next();
@@ -46,7 +44,6 @@ public class ControllerUsingURI extends HttpServlet {
             		| IllegalAccessException e) {
                 throw new ServletException(e);
             }
-            System.out.println("맵 : " + commandHandlerMap);
         }
     }
 
@@ -66,14 +63,12 @@ public class ControllerUsingURI extends HttpServlet {
 		if (command.indexOf(request.getContextPath()) == 0) {
 			command = command.substring(request.getContextPath().length());
 		}
-		System.out.println("사용자 커맨드 : " + command);
         CommandHandler handler = commandHandlerMap.get(command);
         
         //
         
         
         if (handler == null) {
-        	System.out.println("핸들러를 찾을 수 없음");
             handler = new NullHandler();
         }
         String viewPage = null;
