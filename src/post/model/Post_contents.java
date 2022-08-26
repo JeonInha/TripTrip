@@ -9,6 +9,7 @@ public class Post_contents {
 		this.number = number;
 		this.contents = contents;
 	}
+	
 	public Integer getNumber() {
 		return number;
 	}

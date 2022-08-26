@@ -21,8 +21,7 @@ public class LoginService {
 				throw new LoginFailExcepion();
 			}
 			
-			String salt = md.saltSelectById(conn, id);
-			pw = SHA256Util.getEncrypt(pw, salt);
+			pw = SHA256Util.getEncrypt(pw, user.getSalt());
 			
 			if (! user.matchPassword(pw)) {
 				throw new LoginFailExcepion();

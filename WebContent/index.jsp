@@ -14,13 +14,13 @@
 </head>
 <body>
 	<p>트립트립 여행 플래너, 여행특화 sns 사이트입니다.</p>
-	<c:if test="${ ! empty LoginUser }">
+	<c:if test="${ ! empty loginUser }">
 		<p>
-			<strong>${ LoginUser.name }님, 안녕하세용</strong>
+			<strong>${ loginUser.name }님, 안녕하세용</strong>
 			<a href="logout.do">[로그아웃 하기]</a>
 		</p>
 	</c:if>
-	<c:if test="${ empty LoginUser }">
+	<c:if test="${ empty loginUser }">
 		<p>
 			<a href="login.do">[로그인하러 가기]</a>
 		</p>

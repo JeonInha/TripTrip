@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.sun.istack.internal.NotNull;
+
 import jdbc.JDBCListener;
 import user.model.UserAccount;
 
@@ -38,46 +40,11 @@ public class UserDao {
 			} 
 			return user;
 		} finally {
-			JDBCListener.closeRs(rs);
+			if (rs != null) {
+				JDBCListener.closeRs(rs);
+			}
 		}
 	}
-	
-	public String pwSelectById(Connection conn, String id) throws SQLException {
-		String sql = "select * from triptrip.user where id = ?";
-		ResultSet rs = null;
-		String pw = null;
-		
-		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-			pstmt.setString(1, id);
-			rs = pstmt.executeQuery();
-			
-			while (rs.next()) {
-				pw = rs.getString("name");
-			} 
-			return pw;
-		} finally {
-			JDBCListener.closeRs(rs);
-		}
-	}
-	
-	public String saltSelectById(Connection conn, String id) throws SQLException {
-		String sql = "select salt from triptrip.user where id = ?";
-		ResultSet rs = null;
-		String salt = null;
-		
-		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-			pstmt.setString(1, id);
-			rs = pstmt.executeQuery();
-			
-			while (rs.next()) {
-				salt = rs.getString("salt");
-			} 
-			return salt;
-		} finally {
-			JDBCListener.closeRs(rs);
-		}
-	}
-	
 	
 	//u:: update
 	

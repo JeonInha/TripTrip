@@ -52,7 +52,7 @@ public class LoginHandler implements CommandHandler {
 		}
 		try {
 		UserAccount user = ls.login(id, pw);
-		session.setAttribute("LoginUser", user);
+		session.setAttribute("loginUser", user);
 		res.sendRedirect(req.getContextPath() + "/index.jsp");
 		return null;
 		
