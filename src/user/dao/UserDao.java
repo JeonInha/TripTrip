@@ -16,8 +16,18 @@ public class UserDao {
 		String id = rs.getString("id");
 		String name = rs.getString("name");
 		String pw = rs.getString("pw");
-		return new UserAccount(id, name, pw);
+		String salt = rs.getString("salt");
+		return new UserAccount(id, name, pw, salt);
 	}
+	
+	private UserAccount resultMappingNoPw(ResultSet rs) throws SQLException {
+		String id = rs.getString("id");
+		String name = rs.getString("name");
+		
+		return new UserAccount(id, name);
+	}
+	
+
 	
 	// c:: sign Up logic // hasing f(x) use
 	public int signUpByOwn(Connection conn, UserAccount user, String pw) {
@@ -37,6 +47,26 @@ public class UserDao {
 			
 			while (rs.next()) {
 				user = resultMapping(rs);
+			} 
+			return user;
+		} finally {
+			if (rs != null) {
+				JDBCListener.closeRs(rs);
+			}
+		}
+	}
+	
+	public UserAccount userSelectByIdnoPw(Connection conn, String id) throws SQLException {
+		String sql = "select * from triptrip.user where id = ?";
+		ResultSet rs = null;
+		UserAccount user = null;
+		
+		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				user = resultMappingNoPw(rs);
 			} 
 			return user;
 		} finally {

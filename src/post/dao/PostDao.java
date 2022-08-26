@@ -1,10 +1,15 @@
 package post.dao;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.sql.StatementEvent;
 
 import jdbc.JDBCListener;
 import post.model.Plan;
 import post.model.Post;
+import user.dao.UserDao;
+import user.model.UserAccount;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,17 +18,18 @@ import java.sql.SQLException;
 
 public class PostDao {
 
-	/*
-	public Post(String title, Integer contents_number, String user_id) {
-		super();
-		this.title = title;
-		this.contents_number = contents_number;
-		this.user_id = user_id;
+	private Post resultMapping(ResultSet rs, Connection conn, UserDao ud) throws SQLException {
+		int post_id = rs.getInt("id");
+		String title = rs.getString("location_post_title");
+		int contents_number = rs.getInt("post_contents_number");
+		String user_id = rs.getString("user_id");
+		
+		UserAccount writer = ud.userSelectByIdnoPw(conn, user_id);
+		
+		return new Post(post_id, title, contents_number, writer);
 	}
-	*/
-	
-	// C
-	public Post insert(Connection conn, Post post) throws SQLException {
+
+	public Post insertPost(Connection conn, Post post) throws SQLException {
 		PreparedStatement pstmt = null;
 		Statement stmt =null;
 		ResultSet rs = null;
@@ -57,12 +63,43 @@ public class PostDao {
 	}
 	
 	// R
-	// Read Collections By ID
 	
 	// Read Collections By ID Except 이미 쓰인 포스팅 // 이너조인 사용
-//	public List<Plan> readNonPostedCollectionByID(String id) {
-//		String sql = "select * from location_post where user_id = ? and post_contents_number is null";
-//	}
+	public List<Post> readNonPostedCollectionByID(Connection conn, String id) throws SQLException {
+		List<Post> plans = new ArrayList<>();
+		UserDao ud = new UserDao();
+		String sql = "select * from location_post where user_id = ? and post_contents_number is null";
+		ResultSet rs = null;
+		
+		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				plans.add(resultMapping(rs, conn, ud));
+			}
+			return plans;
+			
+		} finally {
+			if (rs != null) {
+				JDBCListener.closeRs(rs);
+			}
+		}		
+	}
 	
-	
+	// Update // content_num add // 
+	public Post updateContentsNum(Connection conn, int content_num, Post post) throws SQLException {
+		String sql = " UPDATE location_post SET post_contents_number = ? WHERE id = ?";
+		
+		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			pstmt.setInt(1, content_num);
+			pstmt.setInt(2, post.getPost_id());
+			int count = pstmt.executeUpdate();
+			if (count > 0) {
+				post.setContents_number(content_num);
+				return post;
+			}
+			return null;
+		} 
+	}
 }

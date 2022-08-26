@@ -10,7 +10,9 @@ import jdbc.JDBCListener;
 import post.model.Post_contents;
 
 public class Post_contentsDao {
-
+	
+	
+	
 	public Post_contents insert(Connection conn, String contents) throws SQLException {
 		PreparedStatement pstmt = null;
 		Statement stmt = null;
@@ -27,12 +29,19 @@ public class Post_contentsDao {
 				if (rs.next()) {
 					Integer newNum = rs.getInt(1);
 					return new Post_contents(newNum, contents);
-				}
-				
+				}				
 			}
 			return null;
 		} finally {
-
+			if (rs != null) {
+				JDBCListener.closeRs(rs);
+			}
+			if (stmt != null) {
+				JDBCListener.closeStmt(stmt);
+			}
+			if (pstmt != null) {
+				JDBCListener.closeStmt(pstmt);
+			}
 		}
 
 	}

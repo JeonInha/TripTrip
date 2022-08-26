@@ -20,7 +20,6 @@ public class LoginService {
 			if (user==null) {
 				throw new LoginFailExcepion();
 			}
-			
 			pw = SHA256Util.getEncrypt(pw, user.getSalt());
 			
 			if (! user.matchPassword(pw)) {
