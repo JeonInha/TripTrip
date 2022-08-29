@@ -12,7 +12,7 @@ import post.service.WrtieArticleService;
 //////// 뭐해야하냐면 .... 리스트 보여주고 컬렉션 선택하는거 .... 
 public class UpdatePostHandler implements CommandHandler {
 	
-	private static final String FORM_VIEW = "/WEB-INF/view/newArticleForm.jsp";
+	private static final String FORM_VIEW = "/WEB-INF/view/newArticle.jsp";
 	private WrtieArticleService ws = new WrtieArticleService();
 	
 	@Override
@@ -34,8 +34,8 @@ public class UpdatePostHandler implements CommandHandler {
 
 	private String processForm(HttpServletRequest req, HttpServletResponse res) {
 		ReadPostByPostNumService pns = new ReadPostByPostNumService();
-		System.out.println(req.getAttribute("plan"));
-		int postid = (int) req.getAttribute("plan");
+		System.out.println(req.getParameter("plan"));
+		int postid = (int) Integer.valueOf(req.getParameter("plan"));
 		System.out.println(postid);
 		Post post = pns.readPostByNum(postid);
 		req.setAttribute("post", post);
