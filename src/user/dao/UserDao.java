@@ -27,12 +27,22 @@ public class UserDao {
 		return new UserAccount(id, name);
 	}
 	
-
 	
 	// c:: sign Up logic // hasing f(x) use
-	public int signUpByOwn(Connection conn, UserAccount user, String pw) {
-		// TODO
-		return 0;
+	public int signUpByOwn(Connection conn, UserAccount user) throws SQLException {
+		String sql = "insert into user (id, pw, name, salt) values (?, ?, ?, ?)";
+		int result = 0;
+		
+		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			
+			pstmt.setString(1, user.getId());
+			pstmt.setString(2, user.getPw());
+			pstmt.setString(3, user.getName());
+			pstmt.setString(4, user.getSalt());
+			
+			result = pstmt.executeUpdate();
+		}
+		return result;
 	}
 	
 	// r:: read // selectById

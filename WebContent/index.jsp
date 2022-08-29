@@ -10,7 +10,6 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
 <title>트립트립</title>
-
 </head>
 <body>
 	<p>트립트립 여행 플래너, 여행특화 sns 사이트입니다.</p>
@@ -24,6 +23,7 @@
 	<c:if test="${ empty loginUser }">
 		<p>
 			<a href="login.do">[로그인하러 가기]</a>
+			<a href="signUp.do">저희 회원이 아닌가요? [회원가입하러 가기]</a>
 		</p>
 	</c:if>
 </body>
