@@ -10,14 +10,15 @@
 <body>
 <form action="writeWithPlan.do" method="post">
 <p>
-	제목:<br/><input type="text" name="title" value="여기에 요청받는 값이 들어와야 합니다.">
+	제목:<br/><input type="text" name="title" value="${post.title}">
 	<c:if test="${errors.title}">제목 값 받아와야 합니다</c:if>
 </p>
 <p>
 	내용:<br/>
 	<textarea name="contents" rows="5" cols="30">${param.contets}</textarea>
+	<input type = "hidden" name = "postnum" value = "${post.post_id}"/>
 </p>
-<input type="submit" value="글 저장하기">
+<input type="submit" value="글 저장하기" />
 </form>
 </body>
-</html>>
+</html>

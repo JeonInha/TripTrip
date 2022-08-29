@@ -125,4 +125,22 @@ public class PostDao {
 			return null;
 		} 
 	}
+	
+	// 조회수
+	public int selectCount(Connection conn) throws SQLException {
+		Statement stmt = null;
+		ResultSet rs = null;
+		try {
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery("select count(*) from location_post");
+			if (rs.next()) {
+				return rs.getInt(1);
+			}
+			return 0;
+		} finally {
+			JDBCListener.closeRs(rs);
+			JDBCListener.closeStmt(stmt);
+		}
+	}
+	
 }

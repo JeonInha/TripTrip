@@ -1,18 +1,21 @@
 package post.command;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import mvc.command.CommandHandler;
 import post.model.Post;
 import post.service.ReadPostByPostNumService;
+import post.service.WriteRequest;
 import post.service.WrtieArticleService;
+import user.model.UserAccount;
 
-///////////// 일단 먼저 해야하는게 있음 지금 ........... 하 ................
-//////// 뭐해야하냐면 .... 리스트 보여주고 컬렉션 선택하는거 .... 
 public class UpdatePostHandler implements CommandHandler {
 	
-	private static final String FORM_VIEW = "/WEB-INF/view/newArticle.jsp";
+	private static final String FORM_VIEW = "/WEB-INF/view/newPost.jsp";
 	private WrtieArticleService ws = new WrtieArticleService();
 	
 	@Override
@@ -28,15 +31,32 @@ public class UpdatePostHandler implements CommandHandler {
 	}
 
 	private String processSubmit(HttpServletRequest req, HttpServletResponse res) {
-		// TODO Auto-generated method stub
-		return null;
+		Map<String, Boolean> errors = new HashMap<>();
+		req.setAttribute("errors", errors);
+		
+		UserAccount userAccount = (UserAccount)req.getSession(false).getAttribute("loginUser");
+		WriteRequest writeReq = createWriteRequest(userAccount, req);
+		System.out.println("wrtieReq 값 확인 포스트 번호" + writeReq.getPostNum() + "제목" + writeReq.getTitle());
+		writeReq.validate(errors);
+		if (!errors.isEmpty()) {
+			return FORM_VIEW;
+		}
+		// 값 심기 //////////
+//		writeReq.setPostNum(postNum);
+		
+		int newPostNo = ws.writeAddPlan(writeReq);
+		req.setAttribute("newPostNo", newPostNo);
+		
+		return "/WEB-INF/view/newPostSuccess.jsp";
+	}
+	
+	private WriteRequest createWriteRequest(UserAccount userAccount, HttpServletRequest req) {
+		return new WriteRequest(Integer.valueOf(req.getParameter("postnum")), new UserAccount(userAccount.getId(), userAccount.getName()), req.getParameter("title"), req.getParameter("contents"));
 	}
 
 	private String processForm(HttpServletRequest req, HttpServletResponse res) {
 		ReadPostByPostNumService pns = new ReadPostByPostNumService();
-		System.out.println(req.getParameter("plan"));
 		int postid = (int) Integer.valueOf(req.getParameter("plan"));
-		System.out.println(postid);
 		Post post = pns.readPostByNum(postid);
 		req.setAttribute("post", post);
 		

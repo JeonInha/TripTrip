@@ -22,4 +22,9 @@ public class Post_contents {
 	public void setContents(String contents) {
 		this.contents = contents;
 	}
+
+	@Override
+	public String toString() {
+		return "Post_contents [number=" + number + ", contents=" + contents + "]";
+	}
 }

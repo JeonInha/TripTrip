@@ -1,5 +1,6 @@
 package post.service;
 import java.io.Writer;
+import java.util.Map;
 
 import post.model.Post;
 import user.model.UserAccount;
@@ -59,4 +60,10 @@ public class WriteRequest {
 		this.writer = writer;
 	}
 	
+	
+	public void validate(Map<String, Boolean> errors) {
+		if (title == null || title.trim().isEmpty()) {
+			errors.put("title", Boolean.TRUE);
+		}
+	}
 }

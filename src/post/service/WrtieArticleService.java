@@ -22,20 +22,16 @@ public class WrtieArticleService {
 		
 		Connection conn = null;
 		
-		
 		try {
 			conn = JDBCListener.getConnection();
 			conn.setAutoCommit(false);
-			
 			Post_contents savedContent = pcd.insert(conn, req.getContent());
-			
+			System.out.println("req.getPostNum = " + req.getPostNum());
 			if (savedContent == null) {
 				throw new RuntimeException("fail to insert post_contents");
 			}
-			
 			Post post = new Post(req.getPostNum(), req.getTitle(), req.getWriter());
 			Post savedPost = pd.updateContentsNum(conn, savedContent.getNumber(), post);
-			
 			if (savedPost == null) {
 				throw new RuntimeException("fail to update post");
 			}
