@@ -25,8 +25,9 @@ public class PostDao {
 		String user_id = rs.getString("user_id");
 		
 		UserAccount writer = ud.userSelectByIdnoPw(conn, user_id);
-		
-		return new Post(post_id, title, contents_number, writer);
+		Post post = new Post(post_id, title, contents_number, writer);
+		System.out.println(post);
+		return post;
 	}
 
 	public Post insertPost(Connection conn, Post post) throws SQLException {
@@ -85,6 +86,28 @@ public class PostDao {
 				JDBCListener.closeRs(rs);
 			}
 		}		
+	}
+	
+	public Post readPostByPostNum(Connection conn, int postNum) throws SQLException {
+		Post post = null;
+		String sql = "select * from location_post where id = ?";
+		UserDao ud = new UserDao();
+		ResultSet rs = null;
+		
+		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			pstmt.setInt(1, postNum);
+			rs = pstmt.executeQuery();
+			
+			if (rs.next()) {
+				post = resultMapping(rs, conn, ud);
+			}
+			return post;
+		} finally {
+			if (rs == null) {
+				JDBCListener.closeRs(rs);
+			}
+		}
+		
 	}
 	
 	// Update // content_num add // 

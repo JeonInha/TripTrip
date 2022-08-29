@@ -4,6 +4,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import mvc.command.CommandHandler;
+import post.model.Post;
+import post.service.ReadPostByPostNumService;
 import post.service.WrtieArticleService;
 
 ///////////// 일단 먼저 해야하는게 있음 지금 ........... 하 ................
@@ -31,7 +33,13 @@ public class UpdatePostHandler implements CommandHandler {
 	}
 
 	private String processForm(HttpServletRequest req, HttpServletResponse res) {
+		ReadPostByPostNumService pns = new ReadPostByPostNumService();
+		System.out.println(req.getAttribute("plan"));
+		int postid = (int) req.getAttribute("plan");
+		System.out.println(postid);
+		Post post = pns.readPostByNum(postid);
+		req.setAttribute("post", post);
+		
 		return FORM_VIEW;
 	}
-
 }

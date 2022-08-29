@@ -19,9 +19,9 @@
 			<ul>
 				<c:forEach var="plan" items="${ planList }">
 					<li>
-						<form action="post/writeWithPlan.do" method = "POST">
-							<label>${ plan.title }<input type="hidden"
-								value="${plan}" /><input type="submit" value="쓰러가자!" /></label>
+						<form action="writeWithPlan.do" method = "GET">
+							<label> ${ plan.title } <input type="hidden" name="plan"
+								value="${ plan.post_id }" /><input type="submit" value="쓰러가자!" /></label>
 						</form>
 				</c:forEach>
 			</ul>

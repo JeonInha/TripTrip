@@ -70,4 +70,11 @@ public class Post {
 		this.writer = writer;
 	}
 
+	@Override
+	public String toString() {
+		return String.format("[id: %d][title: %s][contentNum: %d]", post_id, title, contents_number) + writer;
+	}
+	
+	
+
 }
