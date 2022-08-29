@@ -11,7 +11,7 @@
 	<p>회원가입 하기</p>
 
 	<form action="./signUp.do" method="POST">
-		<p>※id는 영문자와 숫자만 사용, 대소문자를 구분하지 않습니다. 4~20자 사이로 입력하세요.</p>
+		<p>※이메일 주소를 입력해 주세요.</p>
 		<label>ID: <input type="text" name="id" required />
 		</label><br />
 		<br />
