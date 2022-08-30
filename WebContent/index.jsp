@@ -16,6 +16,7 @@
 	<c:if test="${ ! empty loginUser }">
 		<p>
 			<strong>${ loginUser.name }님, 안녕하세용</strong>
+			<a href="plan/location.do">[여행 계획 짜러 가기]</a>
 			<a href="post/choice.do">[여행 리뷰하러 가기]</a>
 			<a href="logout.do">[로그아웃 하기]</a>
 		</p>

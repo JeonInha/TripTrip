@@ -14,21 +14,43 @@ import location.model.Location;
 public class LocationDao {
 
 	// 필요한 부가적 메소드
-	private Location resultMappingNoLatLng(ResultSet rs) throws SQLException {
+	private Location resultMapping(ResultSet rs) throws SQLException {
 		int num = rs.getInt("id");
 		String name = rs.getString("location_name");
-		return new Location(num, name);
+		double y = rs.getDouble("location_lat_Y");
+		double x = rs.getDouble("location_lng_X");
+		String url = rs.getString("location_placeURL");
+		int kkoID = rs.getInt("location_kkoID");
+		
+		return new Location(num, name, x, y, url, kkoID);
 	}
-	
-	private Location resultMappingWithLatLng(ResultSet rs) {
-		return null;
-		//TODO
-	}
-	
 	
 	// create
+	// 이름, x, y, url, kkoID 정보만 가지고 있는 location DB에 넣고 
+	// id값이 생긴, DB에 들어간 location 반환
 	
-	
+	public Location insertLocation(Connection conn, Location location) throws SQLException {
+		String sql = "insert into location (location_name, location_lat_Y, location_lng_x, location_placeURL, location_kkoID) values (?, ?, ?, ?, ?)";
+		try (PreparedStatement pstmt = conn.prepareStatement(sql);) {
+			pstmt.setString(1, location.getName());
+			pstmt.setDouble(2, location.getY());
+			pstmt.setDouble(3, location.getX());
+			pstmt.setString(4, location.getPlaceURL());
+			pstmt.setInt(5, location.getKkoID());
+			int check = pstmt.executeUpdate();
+			if (check > 0) {
+				Statement stmt = conn.createStatement();
+				ResultSet rs = stmt.executeQuery("select last_insert_id();");		
+				int newNum = 0;
+				while (rs.next()) {
+					newNum = rs.getInt(1);
+				}
+				return new Location(newNum, location.getName(), location.getX(), location.getY(), location.getPlaceURL(), location.getKkoID());
+			} else {
+				return null;
+			}
+		}
+	}
 	
 	// read
 	public List<Location> readAllLocation(Connection conn) throws SQLException {
@@ -38,7 +60,7 @@ public class LocationDao {
 		try (Statement stmt = conn.createStatement();
 				ResultSet rs = stmt.executeQuery(sql)) {
 			while (rs.next()) {
-				locaList.add(resultMappingNoLatLng(rs));
+				locaList.add(resultMapping(rs));
 			}
 			return locaList;
 		}
@@ -57,7 +79,7 @@ public class LocationDao {
 			rs = pstmt.executeQuery();
 			
 			while (rs.next()) {
-				locaList.add(resultMappingNoLatLng(rs));
+				locaList.add(resultMapping(rs));
 			}
 			return locaList;
 		} finally {
@@ -67,7 +89,7 @@ public class LocationDao {
 		}
 	}
 	
-	public List<Location> readKategorieLocation(Connection conn, int post_num) throws SQLException {
+	public List<Location> readPlanLocation(Connection conn, int post_num) throws SQLException {
 		List<Location> locaList = new ArrayList<>();
 		String sql = "select location.* /*, location_post.location_post_title, location_post.user_id*/ from location\r\n" + 
 				"	inner join location_post_storage\r\n" + 
@@ -82,7 +104,7 @@ public class LocationDao {
 			rs = pstmt.executeQuery();
 			
 			while (rs.next()) {
-				locaList.add(resultMappingNoLatLng(rs));
+				locaList.add(resultMapping(rs));
 			}
 			return locaList;
 		} finally {
