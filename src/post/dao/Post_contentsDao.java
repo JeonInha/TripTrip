@@ -45,4 +45,23 @@ public class Post_contentsDao {
 		}
 
 	}
+	
+	// post_contents의 id값으로 내용 조회하는 기능
+	public Post_contents selectByIdContents(Connection conn, int id) throws SQLException {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt = conn.prepareStatement("select * from location_post_contents where id = ?");
+			pstmt.setInt(1, id);
+			rs = pstmt.executeQuery();
+			Post_contents contents = null;
+			if (rs.next()) {
+				contents = new Post_contents(rs.getInt("id"), rs.getString("contents"));
+			}
+			return contents;
+		} finally {
+			JDBCListener.closeRs(rs);
+			JDBCListener.closeStmt(pstmt);
+		}
+	}
 }

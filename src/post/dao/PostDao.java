@@ -1,6 +1,8 @@
 package post.dao;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.sql.StatementEvent;
@@ -126,7 +128,7 @@ public class PostDao {
 		} 
 	}
 	
-	// 조회수
+	// 총 게시물 개수 구하기
 	public int selectCount(Connection conn) throws SQLException {
 		Statement stmt = null;
 		ResultSet rs = null;
@@ -143,4 +145,45 @@ public class PostDao {
 		}
 	}
 	
+	// 페이지 나눠서 원하는 페이지의 정보 보기 ex) 1~5까지 1페이지, 6~10까지 2페이지. 그래서 2페이지를 보고싶을때의 작업
+	public List<Post> select(Connection conn, int startRow, int size) throws SQLException {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt = conn.prepareStatement("select * from location_post order by id desc limit ?, ?");
+			pstmt.setInt(1, startRow);
+			pstmt.setInt(2, size);
+			rs = pstmt.executeQuery();
+			List<Post> result = new ArrayList<>();
+			while (rs.next()) {
+				result.add(convertPost(rs));
+			}
+			return result;
+		} finally {
+			JDBCListener.closeRs(rs);
+			JDBCListener.closeStmt(pstmt);
+		}
+	}
+
+	private Post convertPost(ResultSet rs) throws SQLException {
+		return new Post(rs.getInt("id"), rs.getString("location_post_title"), new UserAccount(rs.getString("user_id"), rs.getString("user_name"))); 
+	}
+
+	public Post selectById(Connection conn, int id) throws SQLException {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt = conn.prepareStatement("select * from location_post where id = ?");
+			pstmt.setInt(1, id);
+			rs = pstmt.executeQuery();
+			Post post = null;
+			if (rs.next()) {
+				post = convertPost(rs);
+			}
+			return post;
+		} finally {
+			JDBCListener.closeRs(rs);
+			JDBCListener.closeStmt(pstmt);
+		}
+	}
 }
