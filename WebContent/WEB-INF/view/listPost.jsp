@@ -8,6 +8,7 @@
 <title>게시글 목록</title>
 </head>
 <body>
+	<a href="../">홈으로 돌아가기</a>
 <table border="1">
 	<tr>
 		<td colspan="4"><a href="writeWithPlan.do">[게시글쓰기]</a></td>
