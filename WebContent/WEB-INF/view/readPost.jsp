@@ -29,12 +29,18 @@
 			<c:if test="${ loginUser.id == null }">
 					좋아요 기능은 <button type="button" id="newLogin">로그인</button> 후 사용 가능합니다.<br />
 			</c:if>
+			
+			<c:if
+				test="${ loginUser.id != null && loginUser.id == postData.post.writer.id}">
+				 	로그인이 되어있지만 좋아요 기능은 불가능합니다.<br />
+				<p>좋아요${postData.post.like_count}</p>
+			</c:if>
+			
 			<c:if
 				test="${ loginUser.id != null && loginUser.id != postData.post.writer.id}">
 				 	좋아요 기능이 가능합니다.<br />
 				<button type="button" id="rec_update">좋아요${postData.post.like_count}</button>
 			</c:if>
-
 
 			<td colspan="2"><c:set var="pageNo"
 					value="${empty param.pageNo ? '1' : param.pageNo}" /> <a
