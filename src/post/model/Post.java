@@ -8,6 +8,7 @@ public class Post {
 	private String title;
 	private Integer contents_number;
 	private UserAccount writer;
+	private int like_count;
 	
 	public Post(String title, Integer contents_number, UserAccount writer) {
 		super();
@@ -24,6 +25,15 @@ public class Post {
 		this.setWriter(writer);
 	}
 	
+	// 좋아요 카운트 추가
+	public Post(int post_id, String title, UserAccount writer, int like_count) {
+		super();
+		this.post_id = post_id;
+		this.title = title;
+		this.writer = writer;
+		this.like_count = like_count;
+	}
+
 	public Post(int post_id, String title, UserAccount writer) {
 		super();
 		this.setPost_id(post_id);
@@ -70,11 +80,19 @@ public class Post {
 		this.writer = writer;
 	}
 
+	public int getLike_count() {
+		return like_count;
+	}
+
+	public void setLike_count(int like_count) {
+		this.like_count = like_count;
+	}
+
 	@Override
 	public String toString() {
-		return String.format("[id: %d][title: %s][contentNum: %d]", post_id, title, contents_number) + writer;
+		return "Post [post_id=" + post_id + ", title=" + title + ", contents_number=" + contents_number + ", writer="
+				+ writer + ", like_count=" + like_count + "]";
 	}
-	
-	
+
 
 }

@@ -150,7 +150,8 @@ public class PostDao {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			pstmt = conn.prepareStatement("select * from location_post order by id desc limit ?, ?");
+			pstmt = conn.prepareStatement("SELECT A.*, (select count(*) from `like(location_post)` where location_post_number = A.id) as like_count FROM triptrip.location_post as A"
+					+ " order by id desc limit ?, ?");
 			pstmt.setInt(1, startRow);
 			pstmt.setInt(2, size);
 			rs = pstmt.executeQuery();
@@ -158,6 +159,7 @@ public class PostDao {
 			while (rs.next()) {
 				result.add(convertPost(rs));
 			}
+			System.out.println("뭐가 나올까??" + result);
 			return result;
 		} finally {
 			JDBCListener.closeRs(rs);
@@ -166,7 +168,7 @@ public class PostDao {
 	}
 
 	private Post convertPost(ResultSet rs) throws SQLException {
-		return new Post(rs.getInt("id"), rs.getString("location_post_title"), new UserAccount(rs.getString("user_id"), rs.getString("user_name"))); 
+		return new Post(rs.getInt("id"), rs.getString("location_post_title"), new UserAccount(rs.getString("user_id"), rs.getString("user_name")), rs.getInt("like_count")); 
 	}
 
 	public Post selectById(Connection conn, int id) throws SQLException {

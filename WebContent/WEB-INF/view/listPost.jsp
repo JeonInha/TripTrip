@@ -17,7 +17,8 @@
 		<td>번호</td>
 		<td>제목</td>
 		<td>작성자</td>
-		<td>조회수</td>
+		<td>좋아요</td>
+		<!-- <td>조회수</td> -->
 	</tr>
 <c:if test="${postPage.hasNoPosts()}">
 	<tr>
@@ -33,6 +34,7 @@
 		</a>
 		</td>
 		<td>${post.writer.name}</td>
+		<td>${post.like_count}</td>
 		<%-- <td>${post.readCount}</td> --%>	<!-- 조회수 만들어야함 -->
 	</tr>
 </c:forEach>
