@@ -8,6 +8,7 @@ import java.util.List;
 import jdbc.JDBCListener;
 import location.dao.LocationDao;
 import location.model.Location;
+import location.model.PlanLocation;
 
 public class LocationOperationService {
 
@@ -20,6 +21,17 @@ public class LocationOperationService {
 				locaList.add(ld.insertLocation(conn, key));
 			}
 			return location;
+		} catch (SQLException e) {
+			throw new RuntimeException();
+		}
+	}
+	
+	public List<PlanLocation> printPlaceInPlan(int postNum) {
+		try (Connection conn = JDBCListener.getConnection();) {
+			List<PlanLocation> locaList = ld.readPlanLocation(conn, postNum);
+			
+			return locaList;
+			
 		} catch (SQLException e) {
 			throw new RuntimeException();
 		}

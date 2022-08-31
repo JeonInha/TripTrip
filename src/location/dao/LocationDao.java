@@ -1,15 +1,18 @@
 package location.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import jdbc.JDBCListener;
 import location.model.Location;
+import location.model.PlanLocation;
 
 public class LocationDao {
 
@@ -23,6 +26,30 @@ public class LocationDao {
 		int kkoID = rs.getInt("location_kkoID");
 		
 		return new Location(num, name, x, y, url, kkoID);
+	}
+	
+	private PlanLocation resultMappingPL(ResultSet rs) throws SQLException {
+		
+		int num = rs.getInt("id");
+		String name = rs.getString("location_name");
+		double y = rs.getDouble("location_lat_Y");
+		double x = rs.getDouble("location_lng_X");
+		String url = rs.getString("location_placeURL");
+		int kkoID = rs.getInt("location_kkoID");
+		int order = rs.getInt("location_order");
+		
+		Date date = rs.getDate("location_date");
+		String memo = rs.getString("location_userMemo");
+		
+		Location lo =  new Location(num, name, x, y, url, kkoID);
+		PlanLocation pl = new PlanLocation(lo, order);
+		if (date != null) {
+			pl.setPlandate(date);
+		}
+		if (memo != null) {
+			pl.setUserMemo(memo);
+		}
+		return pl;
 	}
 	
 	// create
@@ -52,7 +79,7 @@ public class LocationDao {
 		}
 	}
 	
-	// read
+	// read // 쓸일이 없을것같은 ... 모든 로케이션 출력하는거
 	public List<Location> readAllLocation(Connection conn) throws SQLException {
 		List<Location> locaList = new ArrayList<>();
 		String sql = "select * from triptrip.location";
@@ -66,6 +93,7 @@ public class LocationDao {
 		}
 	}
 	
+	// 유저 아이디 받아서 유저가 북마크한 로케이션 출력
 	public List<Location> readBookmarkLocation(Connection conn, String user_id) throws SQLException {
 		List<Location> locaList = new ArrayList<>();
 		String sql = "select location.*, location_like.user_id  from location "
@@ -89,9 +117,10 @@ public class LocationDao {
 		}
 	}
 	
-	public List<Location> readPlanLocation(Connection conn, int post_num) throws SQLException {
-		List<Location> locaList = new ArrayList<>();
-		String sql = "select location.* /*, location_post.location_post_title, location_post.user_id*/ from location\r\n" + 
+	// 이건 이제 테스트 필요 // 잘되더라
+	public List<PlanLocation> readPlanLocation(Connection conn, int post_num) throws SQLException {
+		List<PlanLocation> locaList = new ArrayList<>();
+		String sql = "select location.*, location_post_storage.* from location\r\n" + 
 				"	inner join location_post_storage\r\n" + 
 				"    on location.id = location_post_storage.location_number\r\n" + 
 				"    inner join location_post\r\n" + 
@@ -103,10 +132,19 @@ public class LocationDao {
 			pstmt.setInt(1, post_num);
 			rs = pstmt.executeQuery();
 			
+			System.out.println("sql문 여기까지는 잘 도착하니??");
+			
 			while (rs.next()) {
-				locaList.add(resultMapping(rs));
+				System.out.println("값은 받았지 ...???");
+				locaList.add(resultMappingPL(rs));
+				System.out.println("역시 리절트맵핑문제인가");
 			}
 			return locaList;
+		} catch (SQLException e) {
+			System.out.println("sql 에러 발생");
+			e.printStackTrace();
+			System.out.println("에러 던지기");
+			throw e;
 		} finally {
 			if (rs != null) {
 				JDBCListener.closeRs(rs);
