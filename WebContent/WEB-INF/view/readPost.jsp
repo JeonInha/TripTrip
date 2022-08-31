@@ -25,12 +25,25 @@
 	<td><u:pre value='${postData.contents.contents}'/></td>
 </tr>
 <tr>
+
+				<c:if test="${ loginUser.id == null }">
+					좋아요 기능은 <button type="button" id="newLogin">로그인</button> 후 사용 가능합니다.<br />
+				</c:if>
+				<c:if test="${ loginUser.id != null && loginUser.id != postData.post.writer.id}">
+				 	좋아요 기능이 가능합니다.<br />
+					<button value="">
+					좋아요
+					</button> 
+				</c:if>
+
+
+
 	<td colspan="2">
 		<c:set var="pageNo" value="${empty param.pageNo ? '1' : param.pageNo}" />
 		<a href="list.do?pageNo=${pageNo}">[목록]</a>
 		<c:if test="${loginUser.id == postData.post.writer.id}">
-		<a href="modify.do?no=${postData.post.post_id}">[게시글수정]</a>
-		<a href="delete.do?no=${postData.post.post_id}">[게시글삭제]</a>
+			<a href="modify.do?no=${postData.post.post_id}">[게시글수정]</a>
+			<a href="delete.do?no=${postData.post.post_id}">[게시글삭제]</a>
 		</c:if>
 	</td>
 </tr>
