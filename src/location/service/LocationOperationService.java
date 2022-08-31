@@ -2,6 +2,8 @@ package location.service;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import jdbc.JDBCListener;
 import location.dao.LocationDao;
@@ -11,11 +13,13 @@ public class LocationOperationService {
 
 	LocationDao ld = new LocationDao();
 
-	public Location insertPlace(Location location) {
+	public List<Location> insertPlace(List<Location> location) {
 		try (Connection conn = JDBCListener.getConnection();) {
-
-			return ld.insertLocation(conn, location);
-
+			List<Location> locaList = new ArrayList<>();
+			for (Location key : location) {
+				locaList.add(ld.insertLocation(conn, key));
+			}
+			return location;
 		} catch (SQLException e) {
 			throw new RuntimeException();
 		}
