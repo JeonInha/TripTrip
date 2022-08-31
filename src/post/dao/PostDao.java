@@ -175,7 +175,7 @@ public class PostDao {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			pstmt = conn.prepareStatement("select * from location_post where id = ?");
+			pstmt = conn.prepareStatement("SELECT A.*, (select count(*) from `like(location_post)` where location_post_number = A.id) as like_count FROM triptrip.location_post as A where id = ?");
 			pstmt.setInt(1, id);
 			rs = pstmt.executeQuery();
 			Post post = null;

@@ -32,7 +32,7 @@
 			<c:if
 				test="${ loginUser.id != null && loginUser.id != postData.post.writer.id}">
 				 	좋아요 기능이 가능합니다.<br />
-				<button value="">좋아요</button>
+				<button type="button" id="rec_update">좋아요${postData.post.like_count}</button>
 			</c:if>
 
 
@@ -50,5 +50,6 @@
 	<script type="text/javascript"
 		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0de878f53f69b6e817227568f39af332"></script>
 	<script src="../js/readPostMap.js"></script>
+	
 </body>
 </html>
