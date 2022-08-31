@@ -54,6 +54,10 @@ public class PlanLocation {
 	public void memo(Date plandate) {
 		this.plandate = plandate;
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		return "PlanLocation [location=" + location + ", orderby=" + orderby + ", plandate=" + plandate + ", userMemo="
+				+ userMemo + "]";
+	}
 }

@@ -45,9 +45,7 @@
 				</c:if></td>
 		</tr>
 	</table>
-	
-	<div id="map" style="width: 1200px; height: 350px;"></div>
-	
+	<div id="map" data-loca="${planList}" style="width: 1200px; height: 350px;"></div>
 	
 	<script type="text/javascript"
 		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0de878f53f69b6e817227568f39af332"></script>

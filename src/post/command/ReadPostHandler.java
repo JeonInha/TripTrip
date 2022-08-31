@@ -5,6 +5,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import location.model.PlanLocation;
 import location.service.LocationOperationService;
 import mvc.command.CommandHandler;
@@ -24,10 +26,18 @@ public class ReadPostHandler implements CommandHandler {
 		String noVal = req.getParameter("id");
 		int postNum = Integer.parseInt(noVal);
 		try {
-			PostData postData = readService.getPost(postNum, true);
+			
 			List<PlanLocation> plan = lo.printPlaceInPlan(postNum);
+			// json 변환
+			ObjectMapper mapper = new ObjectMapper();
+			String json = mapper.writeValueAsString(plan);
+			System.out.println(json);
+			
+			PostData postData = readService.getPost(postNum, true);
+
 			req.setAttribute("postData", postData);
-			req.setAttribute("planList", plan);
+			// json 담기
+			req.setAttribute("planList", json);
 			return "/WEB-INF/view/readPost.jsp";
 		} catch (PostNotFoundException | PostContentsNotFoundException e) {
 			req.getServletContext().log("no post", e);

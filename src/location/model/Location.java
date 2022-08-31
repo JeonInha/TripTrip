@@ -64,7 +64,10 @@ public class Location {
 	public void setKkoID(int kkoID) {
 		this.kkoID = kkoID;
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		return "Location [name=" + name + ", x=" + x + ", y=" + y + ", placeURL=" + placeURL + "]";
+	}
 	
 }

@@ -132,12 +132,8 @@ public class LocationDao {
 			pstmt.setInt(1, post_num);
 			rs = pstmt.executeQuery();
 			
-			System.out.println("sql문 여기까지는 잘 도착하니??");
-			
 			while (rs.next()) {
-				System.out.println("값은 받았지 ...???");
 				locaList.add(resultMappingPL(rs));
-				System.out.println("역시 리절트맵핑문제인가");
 			}
 			return locaList;
 		} catch (SQLException e) {
