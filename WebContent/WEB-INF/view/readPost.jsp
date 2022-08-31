@@ -58,7 +58,11 @@
 		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0de878f53f69b6e817227568f39af332"></script>
 	<script src="../js/readPostMap.js"></script>
 	
+<<<<<<< HEAD
 			<script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
+=======
+		<script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
+>>>>>>> branch 'main' of https://github.com/JeonInha/TripTrip.git
 	<script type="text/javascript">
 
 		// 추천버튼 클릭시(추천 추가 또는 추천 제거)

@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<% System.out.println("이거 갑 나와라 ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ" + request.getParameter("user_id"));%>
+	<% out.println("이거 갑 나와라 ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ" + request.getParameter("user_id"));%>
 </body>
 </html>
